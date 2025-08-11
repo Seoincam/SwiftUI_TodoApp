@@ -8,23 +8,50 @@
 import SwiftUI
 
 struct TodoRowView: View {
-    let item: TodoItem
+    let todo: TodoItem
+    
+    @State private var showingEditView: Bool = false
     
     var body: some View {
-        NavigationLink {
-            TodoDetailView(item: item)
-        } label: {
-            Text("\(item.title) at \(item.createdAt, format: Date.FormatStyle(date: .numeric, time: .standard))")
-        }
-        .swipeActions(edge: .leading) {
-            Button("Edit") {
-                print("수정!")
+            HStack {
+                Image(systemName: todo.isCompleted ? "checkmark.square.fill" : "square")
+                    .foregroundStyle(todo.isCompleted ? .green : .gray)
+                
+                VStack(alignment: .leading) {
+                    Text(todo.title)
+                        .strikethrough(todo.isCompleted)
+                    Text(todo.createdAt, format: Date.FormatStyle(date: .numeric, time: .standard))
+                        .font(.caption)
+                        .foregroundStyle(.gray)
+                }
             }
-            .tint(.yellow)
+            .onTapGesture {
+                todo.isCompleted.toggle()
+            }
+            .onLongPressGesture(minimumDuration: 0.3) {
+                showingEditView = true
+            }
+            .swipeActions(edge: .leading) {
+                NavigationLink {
+                    TodoDetailView(item: todo)
+                } label: {
+                    Text("detail")
+                }
+                .tint(.yellow)
+            }
+            .sheet(isPresented: $showingEditView) {
+                NavigationStack {
+                    EditTodoView(todo: todo)
+                }
+            }
         }
     }
-}
 
 #Preview {
-    TodoRowView(item: TodoItem(title: "Test todo"))
+    NavigationStack {
+        List {
+            TodoRowView(todo: TodoItem(title: "Test todo"))
+        }
+        .navigationTitle("Todo List")
+    }
 }

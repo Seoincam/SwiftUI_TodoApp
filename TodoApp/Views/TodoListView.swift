@@ -10,10 +10,9 @@ import SwiftData
 
 struct TodoListView: View {
     @Environment(\.modelContext) private var modelContext
+    @Query private var todos: [TodoItem]
     
     let searchText: String
-    
-    @Query private var todos: [TodoItem]
     
     init(searchText: String = "") {
         self.searchText = searchText
@@ -27,7 +26,7 @@ struct TodoListView: View {
     var body: some View {
         List {
             ForEach(todos) { item in
-                TodoRowView(item: item)
+                TodoRowView(todo: item)
             }
             .onDelete(perform: deleteItems)
         }
