@@ -13,11 +13,13 @@ final class TodoItem {
     var id: String = UUID().uuidString
     var title: String
     var isCompleted: Bool
+    var priority: Priority
     var createdAt: Date
     
-    init(title: String, isCompleted: Bool = false, createdAt: Date = Date()) {
+    init(title: String, isCompleted: Bool = false, priority: Priority = .medium, createdAt: Date = Date()) {
         self.title = title
         self.isCompleted = isCompleted
+        self.priority = priority
         self.createdAt = createdAt
     }
 }

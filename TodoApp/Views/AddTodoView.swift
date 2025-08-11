@@ -12,12 +12,19 @@ struct AddTodoView: View {
     @Environment(\.dismiss) private var dismiss
     
     @State private var title: String = ""
+    @State private var priority: Priority = .medium
     
     var body: some View {
         NavigationStack {
             Form {
                 Section {
                     TextField("Title", text: $title)
+                    Picker("Priority", selection: $priority) {
+                        ForEach(Priority.allCases, id: \.self) { priority in
+                            Text(priority.title)
+                                .tag(priority)
+                        }
+                    }
                 }
             }
             .navigationTitle("New Todo")
@@ -29,7 +36,7 @@ struct AddTodoView: View {
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("Save") {
-                        let todo = TodoItem(title: title)
+                        let todo = TodoItem(title: title, priority: priority)
                         modelContext.insert(todo)
                         dismiss()
                     }

@@ -34,19 +34,19 @@ class PreviewContainer {
         let today = Date()
         let calendar = Calendar.current
         
-        let todos: [(String, Date)] = [
-            ("Buy groceries", today),
-            ("강아지 산책", calendar.date(byAdding: .day, value: 1, to: today) ?? today),
-            ("Study SwiftData", calendar.date(byAdding: .hour, value: 5, to: today) ?? today),
-            ("저녁 장보기", calendar.date(byAdding: .day, value: 2, to: today) ?? today),
-            ("헬스장 가기", calendar.date(byAdding: .day, value: 3, to: today) ?? today),
-            ("Call mom", calendar.date(byAdding: .day, value: 7, to: today) ?? today),
-            ("세금 납부 확인", calendar.date(byAdding: .day, value: 14, to: today) ?? today),
-            ("Refactor ViewModel", calendar.date(byAdding: .day, value: 9, to: today) ?? today)
+        let todos: [(String, Date, Priority)] = [
+            ("Buy groceries", today, .medium),
+            ("강아지 산책", calendar.date(byAdding: .day, value: 1, to: today) ?? today, .low),
+            ("Study SwiftData", calendar.date(byAdding: .hour, value: 5, to: today) ?? today, .high),
+            ("저녁 장보기", calendar.date(byAdding: .day, value: 2, to: today) ?? today, .medium),
+            ("헬스장 가기", calendar.date(byAdding: .day, value: 3, to: today) ?? today, .low),
+            ("Call mom", calendar.date(byAdding: .day, value: 7, to: today) ?? today, .medium),
+            ("세금 납부 확인", calendar.date(byAdding: .day, value: 14, to: today) ?? today, .high),
+            ("Refactor ViewModel", calendar.date(byAdding: .day, value: 9, to: today) ?? today, .medium)
         ]
         
-        for (title, date) in todos {
-            let todo = TodoItem(title: title,createdAt: date)
+        for (title, date, priority) in todos {
+            let todo = TodoItem(title: title, priority: priority, createdAt: date)
             container.mainContext.insert(todo)
         }
         
