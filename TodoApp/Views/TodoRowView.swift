@@ -12,6 +12,13 @@ struct TodoRowView: View {
     
     @State private var showingEditView: Bool = false
     
+    func formattedKoreanDate(_ date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "ko_KR")
+        formatter.dateFormat = "yyyy-MM-dd (E)" // E = 요일 (월, 화, 수...)
+        return formatter.string(from: date)
+    }
+    
     var body: some View {
             HStack {
                 Image(systemName: todo.isCompleted ? "checkmark.square.fill" : "square")
@@ -20,9 +27,12 @@ struct TodoRowView: View {
                 VStack(alignment: .leading) {
                     Text(todo.title)
                         .strikethrough(todo.isCompleted)
-                    Text(todo.createdAt, format: Date.FormatStyle(date: .numeric, time: .standard))
-                        .font(.caption)
-                        .foregroundStyle(.gray)
+                    
+                    if let dueDate = todo.dueDate {
+                        Text(formattedKoreanDate(dueDate))
+                            .font(.caption)
+                            .foregroundStyle(dueDate > Date.now ? .gray : .red)
+                    }
                 }
                 
                 Spacer()
