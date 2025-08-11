@@ -11,24 +11,41 @@ import SwiftData
 struct ContentView: View {  
     @State private var showingAddTodo = false
     @State private var searchText = ""
+    @State private var priority: Priority?
 
     var body: some View {
         NavigationStack {
-            TodoListView(searchText: searchText)
-                .searchable(text: $searchText)
-                .navigationTitle("Todo List")
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        EditButton()
-                    }
-                    ToolbarItem {
-                        Button(action: {
-                            showingAddTodo = true
-                        }) {
-                            Label("Add Item", systemImage: "plus")
+            VStack {
+                Picker("Priority", selection: $priority) {
+                    ForEach([nil] + Priority.allCases, id: \.self) { p in
+                        if let p = p {
+                            Text(p.title)
+                                .tag(Optional(p))
+                        } else {
+                            Text("전체")
+                                .tag(nil as Priority?)
                         }
+                        
                     }
                 }
+                
+                TodoListView(searchText: searchText, priorityFilter: priority)
+                    .searchable(text: $searchText)
+                    .navigationTitle("Todo List")
+                    .animation(.default, value: priority)
+                    .toolbar {
+                        ToolbarItem(placement: .navigationBarTrailing) {
+                            EditButton()
+                        }
+                        ToolbarItem {
+                            Button(action: {
+                                showingAddTodo = true
+                            }) {
+                                Label("Add Item", systemImage: "plus")
+                            }
+                        }
+                    }
+            }
         }
         .sheet(isPresented: $showingAddTodo) {
             AddTodoView()
