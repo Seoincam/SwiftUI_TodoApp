@@ -39,7 +39,6 @@ struct TodoListView: View {
             }
             .onDelete(perform: deleteItems)
         }
-        
     }
     
     private func deleteItems(offsets: IndexSet) {

@@ -59,6 +59,7 @@ struct TodoRowView: View {
                 }
             }
         }
+    
     }
 
 #Preview {
