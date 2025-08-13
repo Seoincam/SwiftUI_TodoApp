@@ -39,6 +39,7 @@ struct TodoRowView: View {
                 
                 PriorityBadge(priority: todo.priority)
             }
+            .contentShape(Rectangle())
             .onTapGesture {
                 todo.isCompleted.toggle()
             }

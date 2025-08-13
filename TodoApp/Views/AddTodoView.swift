@@ -36,7 +36,8 @@ struct AddTodoView: View {
                             dueDate ?? Date()
                         }, set: {
                             dueDate = $0
-                        }))
+                        }), displayedComponents: [.date])
+                        .datePickerStyle(.graphical)
                     }
                 }
             }
